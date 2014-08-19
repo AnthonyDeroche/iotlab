@@ -218,8 +218,8 @@ SSLCertificateKeyFile /path_to/server.key
 
 <p>If Glassfish and Apache are on the same machine, you can close both ports 8080 and 8181 with the firewall so the application is only reachable through the proxy.</p>
 
-<pre><code>iptables -A INPUT -p tcp -s localhost --dport 8081 -j ACCEPT
-iptables -A INPUT -p tcp --dport 8081 -j DROP
+<pre><code>iptables -A INPUT -p tcp -s localhost --dport 8080 -j ACCEPT
+iptables -A INPUT -p tcp --dport 8080 -j DROP
 
 iptables -A INPUT -p tcp -s localhost --dport 8181 -j ACCEPT
 iptables -A INPUT -p tcp --dport 8181 -j DROP
