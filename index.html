@@ -105,6 +105,8 @@ Once you have unzipped the glassfish folder, you can start the server by running
 
 <p>The next step is to provide to Glassfish the libraries used by the application. Copy all jar files from the <strong>server/lib/</strong> folder to <strong>glassfish4/glassfish/domains/domain1/lib/ext/</strong>.</p>
 
+<p>You need now to import our tables in your database. For that, I recommend you to use phpmyadmin but if you are familiar with the MySQL command line, it also works fine. Our SQL file is located at <strong>server/sql/iotlab.sql</strong>.</p>
+
 <p>By now, the server should be ready to deploy our application. You need to import the war file which is located in your git repository at server/bin/iotlab.war. This can be done via the administration interface or by entering the following command (in the bin folder) : </p>
 
 <pre><code>./asadmin deploy path_to/iotlab.war
@@ -166,7 +168,7 @@ Once you have unzipped the glassfish folder, you can start the server by running
 
 <p>The solution proposed below uses a frontal web server binded to the ports 80 and 443. This server is in charge to relay all the traffic to Glassfish. Using a proxy could be useful to set up a lot of useful functionalities such as load-balancing, or security purpose. In our case, we use Apache configured with HTTP and HTTPS and it allows us to pass over the previous tricky part. Indeed, configure a TLS certificate is easier with Apache than with Glassfish.</p>
 
-<p><strong>If you want to use TLS</strong>, you need a .crt file which is the certificate and a .key file which is your private key. The certificate can be signed by an authority or self-signed. In this last case, you and the users will be warned by your browser because it will legitimately considered as untrusted website. I suppose you already have these files, and if it isn't the case, do a search about <a href="https://www.google.com/search?output=search&amp;q=generate+self-signed+certificate" target="_blank">generating self-signed certificate</a> or certificate authorities.</p>
+<p><strong>If you want to use TLS</strong>, you need a .crt file which is the certificate and a .key file which is your private key. The certificate can be signed by an authority or self-signed. In this last case, you and the users will be warned by the browser because it will legitimately be considered as an untrusted website. I suppose you already have these files, and if it isn't the case, do a search about <a href="https://www.google.com/search?output=search&amp;q=generate+self-signed+certificate" target="_blank">generating self-signed certificate</a> or certificate authorities.</p>
 
 <p>The configuration of Apache proposed below is working with Apache 2.4, you might have to adapt it to your current version.</p>
 
