@@ -1,0 +1,212 @@
+
+#content{width:95%;margin:auto;}
+
+.loader{visibility:hidden;}
+
+.tableCenter th, .tableCenter td {
+	text-align:center;
+}
+
+#img img{
+	margin: 2%;
+	width: 20%;	
+}
+
+#img{
+	text-align: center;
+	}
+	
+#menu{
+	text-align: center;
+	width: 50%;
+	margin:auto;
+}
+
+
+canvas {
+	border: 1px solid #9C9898;
+}
+
+#tango {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	padding: 10px;
+}
+
+.slider{
+width: 80%
+}
+
+
+#manageExp{
+	background-color: #C5DAE0;
+/* 	position: fixed;
+	bottom: 0px;
+	right: 0px; */
+    body { font-size: 62.5%; }
+    label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    h1 { font-size: 1em; margin: .6em 0; }
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+    
+}
+
+ul>li>ul>li:not(:last-child) {
+  border-bottom-style: solid;
+  border-bottom-width:1px;
+}
+
+.ui-menu{
+	width : 150px;
+	float: right;
+	z-index: 1;
+}
+
+#submitDiv{
+	margin-left: 30%;
+}
+
+.ui-dialog{
+	height: 400px;
+}
+
+.help{
+	width: 25px;
+	height: 25px;
+}
+
+#select-mote{
+	width: 120px;
+}
+
+
+#circleG{
+width:150px;
+height: 100px;
+margin-top: auto;
+margin-left: auto;
+margin-right: auto;
+text-align: center;
+top: 50%;
+bottom: 50%;
+}
+
+.circleG{
+background-color:#31F700;
+float:left;
+height:32px;
+margin-left:17px;
+width:32px;
+-moz-animation-name:bounce_circleG;
+-moz-animation-duration:3s;
+-moz-animation-iteration-count:infinite;
+-moz-animation-direction:linear;
+-moz-border-radius:21px;
+-webkit-animation-name:bounce_circleG;
+-webkit-animation-duration:3s;
+-webkit-animation-iteration-count:infinite;
+-webkit-animation-direction:linear;
+-webkit-border-radius:21px;
+-ms-animation-name:bounce_circleG;
+-ms-animation-duration:3s;
+-ms-animation-iteration-count:infinite;
+-ms-animation-direction:linear;
+-ms-border-radius:21px;
+-o-animation-name:bounce_circleG;
+-o-animation-duration:3s;
+-o-animation-iteration-count:infinite;
+-o-animation-direction:linear;
+-o-border-radius:21px;
+animation-name:bounce_circleG;
+animation-duration:3s;
+animation-iteration-count:infinite;
+animation-direction:linear;
+border-radius:21px;
+}
+
+#circleG_1{
+-moz-animation-delay:0.6s;
+-webkit-animation-delay:0.6s;
+-ms-animation-delay:0.6s;
+-o-animation-delay:0.6s;
+animation-delay:0.6s;
+}
+
+#circleG_2{
+-moz-animation-delay:1.4s;
+-webkit-animation-delay:1.4s;
+-ms-animation-delay:1.4s;
+-o-animation-delay:1.4s;
+animation-delay:1.4s;
+}
+
+#circleG_3{
+-moz-animation-delay:1.8s;
+-webkit-animation-delay:1.8s;
+-ms-animation-delay:1.8s;
+-o-animation-delay:1.8s;
+animation-delay:1.8s;
+}
+
+@-moz-keyframes bounce_circleG{
+0%{
+}
+
+50%{
+background-color:#000000}
+
+100%{
+}
+
+}
+
+@-webkit-keyframes bounce_circleG{
+0%{
+}
+
+50%{
+background-color:#000000}
+
+100%{
+}
+
+}
+
+@-ms-keyframes bounce_circleG{
+0%{
+}
+
+50%{
+background-color:#000000}
+
+100%{
+}
+
+}
+
+@-o-keyframes bounce_circleG{
+0%{
+}
+
+50%{
+background-color:#000000}
+
+100%{
+}
+
+}
+
+@keyframes bounce_circleG{
+0%{
+}
+
+50%{
+background-color:#000000}
+
+100%{
+}
+
+} - See more at: http://cssload.net/#sthash.M3f2zDbG.dpuf

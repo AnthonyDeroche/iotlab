@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE glassfish-web-app PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN" "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd">
+<glassfish-web-app>
+	<context-root>/iotlab</context-root>
+	<security-role-mapping>
+		<role-name>admin</role-name>
+		<group-name>admin</group-name>
+	</security-role-mapping>
+	<session-config>
+		<cookie-properties>
+			<property name="cookiePath" value="/"></property>
+		</cookie-properties>
+	</session-config>
+	<class-loader delegate="true" />
+	<jsp-config>
+		<property name="keepgenerated" value="true">
+			<description>Conserve une copie du code des servlets auto-générées.</description>
+		</property>
+	</jsp-config>
+	<keep-state>true</keep-state>
+</glassfish-web-app>
