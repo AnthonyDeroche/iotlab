@@ -1,43 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>IoTLab by AnthonyDeroche</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="IoTLab : Internet of Things architecture including an embedded application in sky motes, a gateway, and a web application in JEE">
 
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>IoTLab</title>
   </head>
+
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/AnthonyDeroche/iotlab">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/AnthonyDeroche/iotlab/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/AnthonyDeroche/iotlab/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
 
-    <div class="wrapper">
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/AnthonyDeroche/iotlab">View on GitHub</a>
 
-      <section>
-        <div id="title">
-          <h1>IoTLab</h1>
-          <p>Internet of Things architecture including an embedded application in sky motes, a gateway, and a web application in JEE</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/AnthonyDeroche">AnthonyDeroche</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-        </div>
+          <h1 id="project_title">IoTLab</h1>
+          <h2 id="project_tagline">Internet of Things architecture including an embedded application in sky motes, a gateway, and a web application in JEE</h2>
 
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/AnthonyDeroche/iotlab/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/AnthonyDeroche/iotlab/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h3>
 <a name="welcome-to-the-iotlab-project-page" class="anchor" href="#welcome-to-the-iotlab-project-page"><span class="octicon octicon-link"></span></a>Welcome to the IoTLab project page.</h3>
 
@@ -49,8 +42,8 @@
 <ul>
 <li><a href="#install-java-ee-platform-with-glassfish-4">Install Java EE platform with Glassfish 4</a></li>
 <li><a href="#deploy-our-application">Deploy our application</a></li>
-<li><a href="#set-up-a-certificate-with-https-in-glassfish">Set up a certificate with HTTPS in Glassfish</a></li>
-<li><a href="#set-up-a-proxy-by-using-apache-as-front-end-server">Set up a proxy by using Apache as front-end server</a></li>
+<li><a href="#set-up-a-certificate-with-https-in-glassfish">Set up a certificate with HTTPS in Glassfish (Optional)</a></li>
+<li><a href="#set-up-a-proxy-by-using-apache-as-front-end-server">Set up a proxy by using Apache as front-end server (Optional)</a></li>
 <li><a href="#contributors-and-supervisors">Contributors</a></li>
 <li><a href="#contact">Contact</a></li>
 </ul><p>To clone the repository : </p>
@@ -117,12 +110,14 @@ Once you have unzipped the glassfish folder, you can start the server by running
 <pre><code>./asadmin deploy path_to/iotlab.war
 </code></pre>
 
-<p>All should be working fine. </p>
+<p>All should be working fine. The application can be reached at <a href="http://localhost:8080/iotlab/" target="_blank">http://localhost:8080/iotlab/</a></p>
 
 <h2>
 <a name="set-up-a-certificate-with-https-in-glassfish" class="anchor" href="#set-up-a-certificate-with-https-in-glassfish"><span class="octicon octicon-link"></span></a>Set up a certificate with HTTPS in Glassfish</h2>
 
 <p>In this section, I suppose you already have a certificate (.crt) signed by an authority or self-signed and a private key (.key).</p>
+
+<p><em>You can use a proxy like Apache to give it the charge of the secured traffic and pass over this part which is honestly a bit tricky and tedious. <a href="#set-up-a-proxy-by-using-apache-as-front-end-server">Scroll down directly to the configuration of a proxy</a></em></p>
 
 <p>It's strongly advised to change your master password, because it's used to read the key store managed by Glassfish. The default password is changeit. </p>
 
@@ -165,6 +160,55 @@ Once you have unzipped the glassfish folder, you can start the server by running
 <h2>
 <a name="set-up-a-proxy-by-using-apache-as-front-end-server" class="anchor" href="#set-up-a-proxy-by-using-apache-as-front-end-server"><span class="octicon octicon-link"></span></a>Set up a proxy by using Apache as front-end server</h2>
 
+<p>You might find useful to use more common ports like 80 and 443 for your HTTP server Glassfish. </p>
+
+<p>One solution is to change ports used by Glassfish, but it assumes you don't have already any other service using these ports.</p>
+
+<p>The solution proposed below uses a frontal web server binded to the ports 80 and 443. This server is in charge to relay all the traffic to Glassfish. Using a proxy could be useful to set up a lot of useful functionalities such as load-balancing, or security purpose. In our case, we use Apache configured with HTTP and HTTPS and it allows us to pass over the previous tricky part. Indeed, configure a TLS certificate is easier with Apache than with Glassfish.</p>
+
+<p><strong>If you want to use TLS</strong>, you need a .crt file which is the certificate and a .key file which is your private key. The certificate can be signed by an authority or self-signed. In this last case, you and the users will be warned by your browser because it will legitimately considered as untrusted website. I suppose you already have these files, and if it isn't the case, do a search about <a href="https://www.google.com/search?output=search&amp;q=generate+self-signed+certificate" target="_blank">generating self-signed certificate</a> or certificate authorities.</p>
+
+<p>The configuration of Apache proposed below is working with Apache 2.4, you might have to adapt it to your current version.</p>
+
+<p>First of all, you need to enable mods required.</p>
+
+<pre><code>sudo a2enmod proxy 
+sudo a2enmod proxy_http
+sudo a2enmod proxy_wstunnel
+</code></pre>
+
+<p>If you want to use TLS : </p>
+
+<pre><code>sudo a2enmod ssl
+</code></pre>
+
+<p>The modifications have to be done in the configuration file concerning your virtual host. By default, it is located in the directory /etc/apache2/sites-available.</p>
+
+<p>In the configuration of your virtual host you need to add these lines to both parts (normal mode and TLS mode) and replace the "path_to" by the correct values.</p>
+
+<pre><code>Redirect /path_to/iotlab /path_to/iotlab/
+
+ProxyPreserveHost On
+ProxyPass /path_to/iotlab/liveStream/ ws://localhost:8080/iotlab/liveStream/
+ProxyPassReverse /path_to/iotlab/liveStream/ ws://localhost:8080/iotlab/liveStream/
+ProxyPassReverseCookiePath /path_to/iotlab/liveStream/ /
+
+ProxyPass         /path_to/iotlab/  http://localhost:8080/iotlab/ Keepalive=On
+ProxyPassReverse /path_to/iotlab/ http://localhost:8080/iotlab/ Keepalive=On
+ProxyPassReverseCookiePath /path_to/iotlab/ /
+</code></pre>
+
+<p>If you want to use TLS, don't forget to add your files in the TLS configuration part.</p>
+
+<pre><code>SSLCertificateFile /path_to/server.crt
+SSLCertificateKeyFile /path_to/server.key
+</code></pre>
+
+<p>If you want to force the use of HTTPS, add this line to the HTTP configuration part.</p>
+
+<pre><code>Redirect / https://your_domain.com/
+</code></pre>
+
 <h2>
 <a name="contributors-and-supervisors" class="anchor" href="#contributors-and-supervisors"><span class="octicon octicon-link"></span></a>Contributors and Supervisors</h2>
 
@@ -201,9 +245,17 @@ Once you have unzipped the glassfish folder, you can start the server by running
 </li>
 </ul>
       </section>
-
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">IoTLab maintained by <a href="https://github.com/AnthonyDeroche">AnthonyDeroche</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
     
+
   </body>
 </html>
