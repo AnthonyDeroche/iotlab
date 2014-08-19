@@ -39,9 +39,9 @@
         </div>
 
         <h3>
-<a name="welcome-to-the-iotlab-project" class="anchor" href="#welcome-to-the-iotlab-project"><span class="octicon octicon-link"></span></a>Welcome to the IoTLab project.</h3>
+<a name="welcome-to-the-iotlab-project-page" class="anchor" href="#welcome-to-the-iotlab-project-page"><span class="octicon octicon-link"></span></a>Welcome to the IoTLab project page.</h3>
 
-<p>description</p>
+<p>This project is the outcome of one school project and three internships at INRIA Nancy - Grand Est in France. The architecture is composed of an embedded application in sky motes, a gateway in charge of relaying collected data to the server application. The different steps to set up the server our application are described thereafter. As well as we did, you might find useful to add HTTPS or a proxy on server side. These optional steps are described at the end of the page.</p>
 
 <p>To clone the repository : </p>
 
@@ -53,11 +53,47 @@ $ git clone https://github.com/AnthonyDeroche/iotlab.git
 <h3>
 <a name="install-java-ee-platform-with-glassfish-4" class="anchor" href="#install-java-ee-platform-with-glassfish-4"><span class="octicon octicon-link"></span></a>Install Java EE platform with Glassfish 4</h3>
 
+<p>Our application requires Java EE 7 and that's why you need <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank">JDK 7 </a>(or above). <br>
+Glassfish 4 with Java EE 7 environnement can be downloaded at this link : <a href="https://glassfish.java.net/download.html" target="_blank">Glassfish 4</a>.
+Once you have unzipped the glassfish folder, you can start the server by running :</p>
+
+<pre><code>./bin/asadmin start-domain
+
+</code></pre>
+
+<p>If the server is working, you should be able to reach the administration page at <a href="http://localhost:4848/" target="_blank">http://localhost:4848/</a>, and the default page at <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a>.</p>
+
 <h3>
 <a name="deploy-our-application" class="anchor" href="#deploy-our-application"><span class="octicon octicon-link"></span></a>Deploy our application</h3>
 
+<p>We use MySQL as DBMS. So if you don't have MySQL installed, open a terminal and enter the following command : </p>
+
+<pre><code>sudo apt-get install mysql-server
+
+</code></pre>
+
+<p>To manage the database, we advise you to use phpmyadmin : </p>
+
+<pre><code>sudo apt-get install apache2 php5 mysql-server phpmyadmin
+
+</code></pre>
+
+<p>The next step is to configure Glassfish to connect to the MySQL database. In our project, we use a connection pool named BoneCP. We advise you to create a specific user and database. That can be done with phpmyadmin. We provide you a resource file that can be directly imported in Glassfish via the administration interface or in command line. This file is located in server/lib/bonecp-datasource.xml. You have to change several lines to match with your user and database name.</p>
+
+<pre><code>&lt;property name="jdbcUrl" value="jdbc:mysql://localhost:3306/iotlab"/&gt;
+&lt;property name="user" value="admin"/&gt;
+&lt;property name="password" value="admin"/&gt;
+</code></pre>
+
+<p>To import the file, copy it, go in the glassfish folder and then the bin folder and paste the file. Enter the following command : </p>
+
+<pre><code>./asadmin add-resources bonecp-datasource.xml
+</code></pre>
+
+<p>The next step is to provide to Glassfish the libraries used by the application</p>
+
 <h3>
-<a name="set-up-https-in-glassfish" class="anchor" href="#set-up-https-in-glassfish"><span class="octicon octicon-link"></span></a>Set up HTTPS in Glassfish</h3>
+<a name="set-up-a-certificate-with-https-in-glassfish" class="anchor" href="#set-up-a-certificate-with-https-in-glassfish"><span class="octicon octicon-link"></span></a>Set up a certificate with HTTPS in Glassfish</h3>
 
 <h3>
 <a name="set-up-a-proxy-by-using-apache-as-front-end-server" class="anchor" href="#set-up-a-proxy-by-using-apache-as-front-end-server"><span class="octicon octicon-link"></span></a>Set up a proxy by using Apache as front-end server</h3>
@@ -84,10 +120,18 @@ $ git clone https://github.com/AnthonyDeroche/iotlab.git
 <a name="links" class="anchor" href="#links"><span class="octicon octicon-link"></span></a>Links</h3>
 
 <ul>
-<li><a href="http://www.telecomnancy.eu/">http://www.telecomnancy.eu/</a></li>
-<li><a href="http://www.inria.fr/">http://www.inria.fr/</a></li>
-<li><a href="http://www.loria.fr/">http://www.loria.fr/</a></li>
-<li><a href="http://iut-charlemagne.univ-lorraine.fr/">http://iut-charlemagne.univ-lorraine.fr/</a></li>
+<li>
+<a href="http://www.telecomnancy.eu/" target="_blank"></a><a href="http://www.telecomnancy.eu/">http://www.telecomnancy.eu/</a>
+</li>
+<li>
+<a href="http://www.inria.fr/" target="_blank"></a><a href="http://www.inria.fr/">http://www.inria.fr/</a>
+</li>
+<li>
+<a href="http://www.loria.fr/" target="_blank"></a><a href="http://www.loria.fr/">http://www.loria.fr/</a>
+</li>
+<li>
+<a href="http://iut-charlemagne.univ-lorraine.fr/" target="_blank"></a><a href="http://iut-charlemagne.univ-lorraine.fr/">http://iut-charlemagne.univ-lorraine.fr/</a>
+</li>
 </ul>
       </section>
 
