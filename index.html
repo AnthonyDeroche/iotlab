@@ -216,6 +216,15 @@ SSLCertificateKeyFile /path_to/server.key
 <pre><code>sudo service apache2 restart
 </code></pre>
 
+<p>If Glassfish and Apache are on the same machine, you can close both ports 8080 and 8181 with the firewall so the application is only reachable through the proxy.</p>
+
+<pre><code>iptables -A INPUT -p tcp -s localhost --dport 8081 -j ACCEPT
+iptables -A INPUT -p tcp --dport 8081 -j DROP
+
+iptables -A INPUT -p tcp -s localhost --dport 8181 -j ACCEPT
+iptables -A INPUT -p tcp --dport 8181 -j DROP
+</code></pre>
+
 <h2>
 <a name="contributors-and-supervisors" class="anchor" href="#contributors-and-supervisors"><span class="octicon octicon-link"></span></a>Contributors and Supervisors</h2>
 
@@ -239,8 +248,10 @@ SSLCertificateKeyFile /path_to/server.key
 
 <ul>
 <li>
-<a href="http://www.telecomnancy.eu/" target="_blank"></a><a href="http://www.telecomnancy.eu/">http://www.telecomnancy.eu/</a>
+<a href="https://www.anthonyderoche.com/telecomnancy/iotlab/" target="_blank"></a><a href="https://www.anthonyderoche.com/telecomnancy/iotlab/">https://www.anthonyderoche.com/telecomnancy/iotlab/</a>
 </li>
+<li><p><a href="https://github.com/AnthonyDeroche/iotlab/" target="_blank"></a><a href="https://github.com/AnthonyDeroche/iotlab/">https://github.com/AnthonyDeroche/iotlab/</a></p></li>
+<li><p><a href="http://www.telecomnancy.eu/" target="_blank"></a><a href="http://www.telecomnancy.eu/">http://www.telecomnancy.eu/</a></p></li>
 <li>
 <a href="http://www.inria.fr/" target="_blank"></a><a href="http://www.inria.fr/">http://www.inria.fr/</a>
 </li>
