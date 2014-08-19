@@ -58,10 +58,20 @@ Glassfish 4 with Java EE 7 environnement can be downloaded at this link : <a hre
 Once you have unzipped the glassfish folder, you can start the server by running :</p>
 
 <pre><code>./bin/asadmin start-domain
-
 </code></pre>
 
 <p>If the server is working, you should be able to reach the administration page at <a href="http://localhost:4848/" target="_blank">http://localhost:4848/</a>, and the default page at <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a>.</p>
+
+<p>You should change the admin password by entering this command : </p>
+
+<pre><code>./bin/asadmin --user admin change-admin-password
+</code></pre>
+
+<p>If the server is on a remote machine, you may need to enable a remote access : </p>
+
+<pre><code>asadmin enable-secure-admin
+asadmin restart-domain
+</code></pre>
 
 <h3>
 <a name="deploy-our-application" class="anchor" href="#deploy-our-application"><span class="octicon octicon-link"></span></a>Deploy our application</h3>
@@ -90,10 +100,60 @@ Once you have unzipped the glassfish folder, you can start the server by running
 <pre><code>./asadmin add-resources bonecp-datasource.xml
 </code></pre>
 
-<p>The next step is to provide to Glassfish the libraries used by the application</p>
+<p>The next step is to provide to Glassfish the libraries used by the application. Copy all jar files from the <strong>server/lib/</strong> folder to <strong>glassfish4/glassfish/domains/domain1/lib/ext/</strong>.</p>
+
+<p>By now, the server should be ready to deploy our application. You need to import the war file which is located in your git repository at server/bin/iotlab.war. This can be done via the administration interface or by entering the following command (in the bin folder) : </p>
+
+<pre><code>./asadmin deploy path_to/iotlab.war
+</code></pre>
+
+<p>All should be working fine. </p>
 
 <h3>
 <a name="set-up-a-certificate-with-https-in-glassfish" class="anchor" href="#set-up-a-certificate-with-https-in-glassfish"><span class="octicon octicon-link"></span></a>Set up a certificate with HTTPS in Glassfish</h3>
+
+<p>In this section, I suppose you already have a certificate (.crt) signed by an authority or self-signed and a private key (.key).</p>
+
+<p>It's strongly advised to change your master password, because it's used to read the key store managed by Glassfish. The default password is changeit. </p>
+
+<pre><code>./asadmin change-master-password
+</code></pre>
+
+<p>First of all, you need to convert those files to a PKCS#12 (PFX) key store and precise an alias. This alias will be used by Glassfish. You will be asked to enter an export password.</p>
+
+<pre><code>openssl pkcs12 -export -out certificate.p12 -inkey server.key -in server.crt -certfile CACert.pem -name myAlias
+</code></pre>
+
+<p>In this example, CACert.pem is the name of the root certificate that was returned by the certificate authority.</p>
+
+<p>The second step is to add the PKCS#12 key store to the existing key store in Glassfish located in glassfish4/glassfish/domains/domain1/config/.</p>
+
+<pre><code>keytool -v -importkeystore -srckeystore certificate.p12 -srcstoretype PKCS12 -srcalias myAlias -destkeystore keystore.jks -deststoretype JKS -destalias myAlias
+</code></pre>
+
+<p>You can check out the content of the keystore by entering this following command : </p>
+
+<pre><code>keytool -list -keystore keystore.jks
+</code></pre>
+
+<p>In glassfish, the default http listener configured to use TLS is http-listener-2 and the default port used is 8181. You need to go in admin interface, browse to Configuartions/server-config/HTTP Service/Http Listeners/http-listener-2/ and the SSL tab. The Certificate NickName must be the alias you chose in your JKS file.</p>
+
+<p>You just need to restart the domain and you're normally done.</p>
+
+<pre><code>./asadmin restart-domain
+</code></pre>
+
+<p>Check it at <a href="https://localhost:8181/" target="_blank">https://localhost:8181/</a></p>
+
+<p>Finally, on the computer where the gateway is executed, it can be required to add the certificate as trusted certificate especially in case of self-signed certificate. You need to convert it in PEM file. Well-configured, it allows the gateway to connect to the server using TLS and prevents java from printing out an error due to unknown or untrusted certificate.</p>
+
+<pre><code>
+</code></pre>
+
+<p>or the root certificate of an authority</p>
+
+<pre><code>
+</code></pre>
 
 <h3>
 <a name="set-up-a-proxy-by-using-apache-as-front-end-server" class="anchor" href="#set-up-a-proxy-by-using-apache-as-front-end-server"><span class="octicon octicon-link"></span></a>Set up a proxy by using Apache as front-end server</h3>
