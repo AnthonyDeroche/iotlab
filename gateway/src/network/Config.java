@@ -66,4 +66,6 @@ public interface Config {
 	public void validateCommands();
 
 	public String getTlsUri();
+	
+	public int getTypeOffset();
 }

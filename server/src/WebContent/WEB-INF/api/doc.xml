@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE doc[
+<!ELEMENT version (#PCDATA)>
+<!ELEMENT base (#PCDATA)>
+<!ELEMENT dataTypes (type*)>
+<!ELEMENT paramTypes (type*)>
+<!ELEMENT modelTypes (type*)>
+	<!ELEMENT type EMPTY>
+	<!ATTLIST type value CDATA #REQUIRED>
+<!ELEMENT models (model*)>
+	<!ELEMENT model (request*,response*)>
+		<!ELEMENT request (#PCDATA)>
+		<!ELEMENT response (#PCDATA)>
+		<!ATTLIST response success CDATA #REQUIRED>
+		<!ATTLIST response type CDATA #REQUIRED>
+		<!ATTLIST response code CDATA #REQUIRED>
+	<!ATTLIST model id ID #REQUIRED>
+<!ELEMENT categories (category*)>
+	<!ELEMENT category (endpoint*)>
+		<!ELEMENT endpoint (desc, parameters, security)>
+			<!ELEMENT desc (#PCDATA)>
+			<!ELEMENT parameters (param*)>
+				<!ELEMENT param EMPTY>
+				<!ATTLIST param name CDATA #REQUIRED>
+				<!ATTLIST param type CDATA #REQUIRED>
+				<!ATTLIST param dataType CDATA #REQUIRED>
+				<!ATTLIST param desc CDATA #REQUIRED>
+			<!ELEMENT security (#PCDATA)>
+			<!ATTLIST security allowed CDATA #REQUIRED>
+		<!ATTLIST endpoint url CDATA #REQUIRED>
+		<!ATTLIST endpoint method CDATA #REQUIRED>
+		<!ATTLIST endpoint model IDREF #IMPLIED>
+	<!ATTLIST category name CDATA #REQUIRED>
+	<!ATTLIST category desc CDATA #REQUIRED>
+]>
+<doc>
+
+	<version>1.0</version>
+	
+	<dataTypes>
+		<type value="string"/>
+		<type value="int"/>
+		<type value="long"/>
+		<type value="bool"/>
+	</dataTypes>
+	
+	<paramTypes>
+		<type value="form"/>
+		<type value="path"/>
+		<type value="raw"/>
+	</paramTypes>
+	
+	<modelTypes>
+		<type value="json"/>
+	</modelTypes>
+	
+	<models>
+		<model id="login">
+			<response success="true" type="json" code="200">{"success":true,"message":"Authentification successful"}</response>
+			<response success="false" type="json" code="200" >{"success":false,"message":"Wrong username or password"}</response>
+		</model>
+		<model id="logout">
+			<response success="true" type="json" code="200">{"success":true,"message":"You have successfully logged out"}</response>
+		</model>
+		<model id="addData">
+			<response success="true" type="json" code="200">{"success":true,"message":"Data have been successfully saved and forwarded"}</response>
+		</model>
+		<model id="getData">
+			<response success="true" type="json" code="200">{"data":[{"timestamp":1411848808,"label":"temperature","value":24.0,"mote":"219.98"},{"timestamp":1411848831,"label":"temperature","value":23.6,"mote":"45.141"}]}</response>
+		</model>
+		<model id="getMotes">
+			<response success="true" type="json" code="200">{"motesNb":6,"sender":[{"id":254,"ipv6":"219.98","mac":"219.98","lat":239.0,"lon":142.0},{"id":255,"ipv6":"88.126","mac":"88.126","lat":242.0,"lon":599.0},{"id":256,"ipv6":"153.152","mac":"153.152","lat":38.0,"lon":113.0},{"id":257,"ipv6":"25.90","mac":"25.90","lat":246.0,"lon":402.0},{"id":258,"ipv6":"45.141","mac":"45.141","lat":444.0,"lon":87.0}],"sink":[{"dodagVersionNumber":241,"id":260,"ipv6":"100.49","mac":"100.49","lat":0.0,"lon":0.0}]}</response>
+		</model>
+		<model id="setMotes">
+			<request>[{"id":254,"ipv6":"219.98","mac":"219.98","lat":229,"lon":162},{"id":255,"ipv6":"88.126","mac":"88.126","lat":242,"lon":599},{"id":256,"ipv6":"153.152","mac":"153.152","lat":38,"lon":113},{"id":257,"ipv6":"25.90","mac":"25.90","lat":246,"lon":402},{"id":258,"ipv6":"45.141","mac":"45.141","lat":444,"lon":87}]</request>
+			<response success="true" type="json" code="200">{"success":true,"message":"Positions successfully saved"}</response>
+			<response success="false" type="json" code="200">{"success":false,"message":"Authentification required"}</response>
+		</model>
+		<model id="addSink">
+		</model>
+		<model id="removeMote">
+		</model>
+		<model id="getAnchors">
+		</model>
+		<model id="addAnchor">
+		</model>
+		<model id="removeAnchor">
+		</model>
+		<model id="sendCommand">
+			<request>data=GLOBAL_REPAIR</request>
+			<response success="true" type="json" code="200">{"success":true,"message":"Command has been successfully forwarded"}</response>
+			<response success="false" type="json" code="200">{"success":false,"message":"Could not find any connected gateway"}</response>
+		</model>
+		<model id="ws">
+			<response success="true" type="Web Socket Protocol Handshake" code="101"></response>
+		</model>
+	</models>
+	
+	<categories>
+		<category name="/liveStream" desc="WebSocket (real-time streams)">
+			<endpoint url="/{type_id}" method="GET (HTTP Upgrade websocket)" model="ws">
+				<desc>Connect to a live stream with the ID of data type and the WebSocket protocol</desc>
+				<parameters>
+					<param name="type_id" type="path" dataType="int" desc="The ID of data type"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+		</category>
+		<category name="/rest/data" desc="Data Management">
+			<endpoint url="/" method="POST" model="addData">
+				<desc>Add new data</desc>
+				<parameters>
+					<param name="data" type="form" dataType="string" desc="The data flow"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			<endpoint url="/{experiment_id}/{labels}/{nb}" method="GET" model="getData">
+				<desc>Get data by experiment and label</desc>
+				<parameters>
+					<param name="experiment_id" type="path" dataType="int" desc="The experiment ID"/>
+					<param name="labels" type="path" dataType="string" desc="Labels separated by -"/>
+					<param name="nb" type="path" dataType="int" desc="Number of values per label (averages are done if needed)"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/{experiment_id}/{labels}/{nb}/{motes}" method="GET" model="getData">
+				<desc>Get data by experiment, label, and mote</desc>
+				<parameters>
+					<param name="experiment_id" type="path" dataType="int" desc="The experiment ID"/>
+					<param name="labels" type="path" dataType="string" desc="Labels separated by -"/>
+					<param name="nb" type="path" dataType="int" desc="Number of values per label and mote (averages are done if needed)"/>
+					<param name="motes" type="path" dataType="string" desc="Motes' address separated by -"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/{experiment_id}/{labels}/{nb}/{motes}/{from}/{to}" method="GET" model="getData">
+				<desc>Get data by experiment, label, mote, and timestamp</desc>
+				<parameters>
+					<param name="experiment_id" type="path" dataType="int" desc="The experiment ID"/>
+					<param name="labels" type="path" dataType="string" desc="Labels separated by -"/>
+					<param name="nb" type="path" dataType="int" desc="Number of values per label and mote (averages are done if needed)"/>
+					<param name="motes" type="path" dataType="string" desc="Motes' address separated by -"/>
+					<param name="from" type="path" dataType="long" desc="Minimum timestamp in ms"/>
+					<param name="to" type="path" dataType="long" desc="Maximum timestamp in ms"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/{experiment_id}/{labels}/(last|first)" method="GET" model="getData">
+				<desc>Get last or first data by experiment and label</desc>
+				<parameters>
+					<param name="experiment_id" type="path" dataType="int" desc="The experiment ID"/>
+					<param name="labels" type="path" dataType="string" desc="Labels separated by -"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/{experiment_id}/{labels}/(last|first)/{motes}" method="GET" model="getData">
+				<desc>Get last or first data by experiment, label, and mote</desc>
+				<parameters>
+					<param name="experiment_id" type="path" dataType="int" desc="The experiment ID"/>
+					<param name="labels" type="path" dataType="string" desc="Labels separated by -"/>
+					<param name="motes" type="path" dataType="string" desc="Motes' address separated by -"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+		</category>
+		
+		<category name="/rest/info" desc="Manage and get miscellaneous information">
+		
+			<endpoint url="/stats/{experiment_id}" method="GET">
+				<desc>Get statistics of an experiment</desc>
+				<parameters>
+					<param name="experiment_id" type="path" dataType="int" desc="The ID of the experiment"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			
+			<endpoint url="/stats/{experiment_id}/{motes}" method="GET">
+				<desc>Get statistics of an experiment for specific motes</desc>
+				<parameters>
+					<param name="experiment_id" type="path" dataType="int" desc="The ID of the experiment"/>
+					<param name="motes" type="path" dataType="string" desc="The motes' address separated by -"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			
+			<endpoint url="/stats/{experiment_id}/{motes}/{from}/{to}" method="GET">
+				<desc>Get statistics of an experiment for specific motes and a period</desc>
+				<parameters>
+					<param name="experiment_id" type="path" dataType="int" desc="The ID of the experiment"/>
+					<param name="motes" type="path" dataType="string" desc="The motes' address separated by -"/>
+					<param name="from" type="path" dataType="long" desc="The minimum timestamp considered in ms"/>
+					<param name="to" type="path" dataType="long" desc="The maximum timestamp considered in ms"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+		
+		
+			<endpoint url="/motes" method="GET" model="getMotes">
+				<desc>Get motes of the network</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/motes" method="POST" model="setMotes">
+				<desc>Set the motes' position</desc>
+				<parameters>
+					<param name="motes" type="raw" dataType="json" desc="Motes represented in JSON"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			<endpoint url="/motes/sink/add" method="POST" model="addSink">
+				<desc>Add a sink</desc>
+				<parameters>
+					<param name="data" type="form" dataType="string" desc="The data flow related to the sink"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			<endpoint url="/motes/remove" method="POST" model="removeMote">
+				<desc>Remove a mote</desc>
+				<parameters>
+					<param name="mote_id" type="form" dataType="int" desc="The ID of mote to remove"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			<endpoint url="/motes/anchor" method="GET" model="getAnchors">
+				<desc>Get motes considered anchors for localization</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/motes/anchor/add" method="POST" model="addAnchor">
+				<desc>Add a mote as anchor</desc>
+				<parameters>
+					<param name="mote_id" type="form" dataType="int" desc="The ID of mote to consider as anchor"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			<endpoint url="/motes/anchor/remove" method="POST" model="removeAnchor">
+				<desc>Remove an anchor</desc>
+				<parameters>
+					<param name="mote_id" type="form" dataType="int" desc="The ID of anchor to remove"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			
+			<endpoint url="/labels" method="GET">
+				<desc>Get labels</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/labels/add" method="POST">
+				<desc>Remove a label</desc>
+				<parameters>
+					<param name="label" type="form" dataType="string" desc="The label to add"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			<endpoint url="/labels/delete" method="POST">
+				<desc>Remove a label</desc>
+				<parameters>
+					<param name="label" type="form" dataType="string" desc="The label to remove"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			
+			<endpoint url="/filters" method="GET">
+				<desc>Get filters</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/filters/add" method="POST">
+				<desc>Add a filter</desc>
+				<parameters>
+					<param name="offset" type="form" dataType="int" desc="The position of the integer on the data flow for a given type"/>
+					<param name="strategy" type="form" dataType="int" desc="The ID of the strategy used for conversion"/>
+					<param name="label" type="form" dataType="int" desc="The ID of the label representing the semantic of this integer"/>
+					<param name="type" type="form" dataType="int" desc="The ID of the type of data flow considered"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			<endpoint url="/filters/delete" method="POST">
+				<desc>Remove a filter</desc>
+				<parameters>
+					<param name="filter_id" type="form" dataType="int" desc="The ID of the filter to remove"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			
+			<endpoint url="/strategies" method="GET">
+				<desc>Get strategies</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/strategies/add" method="POST">
+				<desc>Add a strategy</desc>
+				<parameters>
+					<param name="className" type="form" dataType="string" desc="The class name that will be dynamically instanciated during the conversion process"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			<endpoint url="/strategies/delete" method="POST">
+				<desc>Remove a strategy</desc>
+				<parameters>
+					<param name="id" type="form" dataType="int" desc="The ID of the strategy to remove"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			
+			<endpoint url="/types" method="GET">
+				<desc>Get types of data flows</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/types/add" method="POST">
+				<desc>Add a type of data</desc>
+				<parameters>
+					<param name="type_id" type="form" dataType="int" desc="The ID of the type of data"/>
+					<param name="description" type="form" dataType="string" desc="The description"/>
+					<param name="streamName" type="form" dataType="string" desc="The stream name (class name)"/>
+					<param name="minDataNumber" type="form" dataType="int" desc="The minimum number of integers contained in the flow"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			<endpoint url="/types/delete" method="POST">
+				<desc>Remove a type of data</desc>
+				<parameters>
+					<param name="type_id" type="form" dataType="int" desc="The ID of the type to remove"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			
+			<endpoint url="/logs" method="GET">
+				<desc>Get all logs of the platform</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+			<endpoint url="/logs/{nb}" method="GET">
+				<desc>Get last logs of the platform</desc>
+				<parameters>
+					<param name="nb" type="path" dataType="int" desc="The number of logs"/>
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+			
+			<endpoint url="/dbstats" method="GET">
+				<desc>Get the database statistics</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+			
+			<endpoint url="/conf" method="GET">
+				<desc>Get the configuration</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+			
+		</category>
+
+		<category name="/rest" desc="Commands Management">
+			<endpoint url="/sendCommand" method="POST" model="sendCommand">
+				<desc>Send a command to the network via all connected gateway</desc>
+				<parameters>
+					<param name="command" type="form" dataType="string" desc="The command"/>
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+		</category>
+		
+		<category name="/rest/geo" desc="Localization service Management">
+			<endpoint url="/services" method="GET">
+				<desc>Get services' state of localization</desc>
+				<parameters>
+					
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+			<endpoint url="/services/enable" method="POST">
+				<desc>Enable a service for localization</desc>
+				<parameters>
+					<param name="service" type="form" dataType="string" desc="The service's name"/>
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+
+			<endpoint url="/services/disable" method="POST">
+				<desc>Disable a service for localization</desc>
+				<parameters>
+					<param name="service" type="form" dataType="string" desc="The service's name"/>
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+			
+			<endpoint url="/add" method="POST">
+				<desc>Add new localization data</desc>
+				<parameters>
+					<param name="data" type="form" dataType="string" desc="The data flow"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			
+			<endpoint url="/{nb}" method="GET">
+				<desc>Get localization data</desc>
+				<parameters>
+					<param name="nb" type="path" dataType="int" desc="The number of data per couple source - destination"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			
+			<endpoint url="/{nb}/{sources}/{destinations}" method="GET">
+				<desc>Get localization data with specific sources and destinations</desc>
+				<parameters>
+					<param name="nb" type="path" dataType="int" desc="The number of data per couple source - destination"/>
+					<param name="sources" type="path" dataType="string" desc="The sources' address separated by -"/>
+					<param name="destinations" type="path" dataType="string" desc="The destinations' address separated by -"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			
+			<endpoint url="/{nb}/{sources}/{destinations}/{from}/{to}" method="GET">
+				<desc>Get localization data with specific sources and destinations and a period</desc>
+				<parameters>
+					<param name="nb" type="path" dataType="int" desc="The number of data per couple source - destination"/>
+					<param name="sources" type="path" dataType="string" desc="The sources' address separated by -"/>
+					<param name="destinations" type="path" dataType="string" desc="The destinations' address separated by -"/>
+					<param name="from" type="path" dataType="long" desc="The minimum timestamp"/>
+					<param name="to" type="path" dataType="long" desc="The maximum timestamp"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			
+			<endpoint url="/last" method="GET">
+				<desc>Get last localization data for each couple source - destination</desc>
+				<parameters>
+
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			
+			<endpoint url="/last/{sources}/{destinations}" method="GET">
+				<desc>Get last localization data with specific sources and destinations</desc>
+				<parameters>
+					<param name="sources" type="path" dataType="string" desc="The sources' address separated by -"/>
+					<param name="destinations" type="path" dataType="string" desc="The destinations' address separated by -"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			
+			<endpoint url="/calibration/measures" method="GET">
+				<desc>Get calibration measures used for model parameterizing</desc>
+				<parameters>
+			
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			
+			<endpoint url="/tester/status" method="GET">
+				<desc>Get the state of tester</desc>
+				<parameters>
+			
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			
+			<endpoint url="/tester/startOptimizer" method="POST">
+				<desc>Start the optimizer</desc>
+				<parameters>
+			
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			
+			<endpoint url="/tester/stopOptimizer" method="POST">
+				<desc>Stop the optimizer</desc>
+				<parameters>
+			
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			
+			<endpoint url="/tester/weights" method="POST">
+				<desc>Stop the optimizer</desc>
+				<parameters>
+					<param name="weights" type="raw" dataType="json" desc="Weights used for combining algorithms"/>
+				</parameters>
+				<security allowed="member"/>
+			</endpoint>
+			
+		</category>
+		
+		<category name="/rest/account" desc="Accounts Management">
+			<endpoint url="/login" method="POST" model="login">
+				<desc>Log a user in the website</desc>
+				<parameters>
+					<param name="username" type="form" dataType="string" desc="The username"/>
+					<param name="password" type="form" dataType="string" desc="The password"/>
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/logout" method="GET" model="logout">
+				<desc>Log out</desc>
+				<parameters>
+				
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/isLoggedIn" method="GET">
+				<desc>Check the session state</desc>
+				<parameters>
+				
+				</parameters>
+				<security allowed="all"/>
+			</endpoint>
+			<endpoint url="/accounts" method="GET">
+				<desc>List all users</desc>
+				<parameters>
+				
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+			<endpoint url="/register" method="POST">
+				<desc>Register a user</desc>
+				<parameters>
+					<param name="username" type="form" dataType="string" desc=""/>
+					<param name="password" type="form" dataType="string" desc=""/>
+					<param name="email" type="form" dataType="string" desc=""/>
+					<param name="admin" type="form" dataType="bool" desc=""/>
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+			<endpoint url="/remove" method="POST">
+				<desc>Remove a user</desc>
+				<parameters>
+					<param name="username" type="form" dataType="string" desc=""/>
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+			<endpoint url="/update" method="POST">
+				<desc>Update a user</desc>
+				<parameters>
+					<param name="username" type="form" dataType="string" desc=""/>
+					<param name="password" type="form" dataType="string" desc=""/>
+					<param name="email" type="form" dataType="string" desc=""/>
+					<param name="admin" type="form" dataType="bool" desc=""/>
+				</parameters>
+				<security allowed="admin"/>
+			</endpoint>
+		</category>
+	</categories>
+</doc>

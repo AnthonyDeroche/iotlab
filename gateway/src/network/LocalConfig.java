@@ -21,8 +21,8 @@ public class LocalConfig implements Config {
 	private boolean tls;
 	private String context;
 	private int typeOffset;
-	private List<Integer> allowForwarding;
-	private List<Integer> allowForwardingOnWs;
+	private List<Integer> allowForwarding = new ArrayList<>();;
+	private List<Integer> allowForwardingOnWs = new ArrayList<>();;
 	private String uri;
 	private String commandWsUrl;
 	private String checkLoginUrl;
@@ -54,7 +54,7 @@ public class LocalConfig implements Config {
 				String key = (String) e.nextElement();
 				map.put(key, prop.getProperty(key));
 			}
-			// System.out.println(map);
+			 System.out.println(map);
 
 		} catch (IOException ex) {
 			System.err.println("Missing or malformed file " + file);
@@ -222,7 +222,7 @@ public class LocalConfig implements Config {
 				try {
 					allowForwardingOnWs.add(Integer.parseInt(split[i]));
 				} catch (NumberFormatException e) {
-
+					System.err.println(e.getMessage());
 				}
 			}
 		}

@@ -32,6 +32,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
  *
  */
 @Path("account")
+
 public class AccountResource extends RestResource {
 
 	@POST

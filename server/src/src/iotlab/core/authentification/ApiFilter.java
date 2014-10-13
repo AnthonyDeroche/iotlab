@@ -27,10 +27,11 @@ import javax.servlet.http.HttpSession;
  * @author Anthony Deroche
  *
  */
-@WebFilter("/rest/*")
+@WebFilter("/rest/*") 
 public class ApiFilter implements Filter {
 	
-	private String[] exceptions = { "/account/login","/sendCommand"};
+	//all urls are protected on POST requests except those in this table
+	private String[] exceptions = {"/account/login"}; 
 
 	public ApiFilter() {
 

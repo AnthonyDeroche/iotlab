@@ -209,4 +209,18 @@ background-color:#000000}
 100%{
 }
 
-} - See more at: http://cssload.net/#sthash.M3f2zDbG.dpuf
+}
+
+
+/* API DOCUMENTATION */
+
+.api-table{width:100%;}
+tbody.api-depth1, tr.api-depth2{display:none;}
+.api-cat-desc{color:#888888;}
+.api-get{color:green;}
+.api-post{color:dodgerblue;}
+.api-security-all{color:green;}
+.api-security-member{color:dodgerblue;}
+.api-security-admin{color:red;}
+.api-success-true{color:green;}
+.api-success-false{color:red;}

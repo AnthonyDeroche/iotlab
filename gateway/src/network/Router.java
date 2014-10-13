@@ -44,7 +44,12 @@ public class Router {
 		this.uri = config.getUri();
 		this.tlsUri = config.getTlsUri();
 		this.TLS = config.getTLS();
-
+		
+		this.allowForwarding = config.getAllowForwarding();
+		this.allowForwardingOnWs = config.getAllowForwardingOnWs();
+		this.display = config.getDisplayResponse();
+		this.typeOffset = config.getTypeOffset();
+		
 		ckman = new CookieManager();
 		CookieHandler.setDefault(ckman);
 		if (login) {

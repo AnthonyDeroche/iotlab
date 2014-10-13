@@ -27,8 +27,21 @@ import javax.servlet.http.HttpSession;
  * @author Anthony Deroche
  *
  */
-@WebFilter(urlPatterns={"/admin/*","/rest/info/conf","/rest/sendCommand","/rest/geo/disable","/rest/geo/enable","/rest/geo/services",
-		"/rest/info/logs","/rest/account/accounts","/rest/account/register","/rest/account/remove","/rest/account/update"}) 
+@WebFilter(urlPatterns={ //ADMIN ACCESS REQUIRED FOR THESE URLS
+		"/admin/*",
+		"/rest/sendCommand",
+		"/rest/info/conf",
+		"/rest/info/dbstats",
+		"/rest/info/logs",
+		"/rest/info/logs/*",
+		"/rest/account/accounts",
+		"/rest/account/register",
+		"/rest/account/remove",
+		"/rest/account/update",
+		"/rest/geo/disable",
+		"/rest/geo/enable",
+		"/rest/geo/services"
+	}) 
 public class AdminFilter implements Filter {
 	
 	public AdminFilter() {

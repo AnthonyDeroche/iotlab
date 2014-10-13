@@ -56,6 +56,7 @@ public class WebSocket {
 	@EJB
 	private DAOManager dao;
 
+	//prevent from opening session on a specific type if the user is not logged in
 	private final List<Integer> protectedTypes = Arrays.asList(new Integer[] {CommandManager.TYPE });
 
 	@OnOpen
