@@ -60,7 +60,7 @@ static char buf[MAX_PAYLOAD_LEN];
 static uint16_t type;
 
 
-static int8_t started=1;
+static int8_t started=0;
 static int8_t isStarted(){
     return started;
 }
