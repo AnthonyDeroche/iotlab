@@ -141,7 +141,7 @@
 
 		
 
-	<div id="container" style="width:1000px;height:800px;margin:auto;background-image:url('img/madynes.png');background-position:center;background-repeat:no-repeat;"></div>
+	<div id="container" style="background-image:url('img/tn-et2.png');background-repeat:no-repeat;"></div>
 	<div style="height:200px;width:100%;"></div>
 	
 	<div class="row">
@@ -172,7 +172,7 @@
 			$.get('rest/info/motes',function(content){
 				
 				var width = 1000;
-				var height = 800;
+				var height = 1700;
 
 				var motes = content.sender;
 				

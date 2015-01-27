@@ -78,7 +78,7 @@
 				for(var mac in lossRatios){
 					dataSeries[i]={
 						name:mac,
-						data:[parseFloat(lossRatios[mac])]
+						data:[parseFloat(lossRatios[mac])*100]
 					};
 					
 					if(typeof exist[mac] == 'undefined'){
@@ -117,7 +117,7 @@
 						'<td>'+data[mote]["meantemperature"]+'</td>'+
 						'<td>'+data[mote]["meanhumidity"]+'</td>'+
 						'<td>'+data[mote]["meanlight1"]+'</td>'+
-						'<td>'+lossRatios[mote]+'</td></tr>')
+						'<td>'+parseFloat(lossRatios[mote])*100+'</td></tr>')
 								.appendTo('#tableBody');
 				
 				

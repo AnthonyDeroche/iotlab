@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-	<div id="container" style="background-image:url('img/loria.png');background-repeat:no-repeat;margin:10px;"></div>
+	<div id="container" style="background-image:url('img/tn-et2.png');background-repeat:no-repeat;margin:10px;"></div>
 	<br /><br /><br /><br /><br />
 	<ul class="pricing-table" id="tooltip" style="position:absolute;display:none;box-shadow:0px 0px 10px 1px #333;"> 
 		<li class="title"></li> 
@@ -20,8 +20,8 @@
 				var sinks = content.sink;
 				var stage = new Kinetic.Stage({
 					container : 'container',
-					width : 3000,
-					height : 3000
+					width : 1000,
+					height : 1700
 				});
 				
 				var mouseX=0,mouseY=0;

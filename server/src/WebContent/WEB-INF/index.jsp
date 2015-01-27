@@ -128,12 +128,7 @@
       </li>
       <li><a href="geolocation"> Geolocation</a></li>
       <li><a href="api">API documentation</a></li>
-      <li class="has-dropdown">
-        <a href="#">Others</a>
-        <ul class="dropdown">
-          <li><a href="mapTN">Map TELECOM Nancy</a></li>
-        </ul>
-      </li>
+      <li><a href="mapTN">Map TELECOM Nancy</a></li>
       <li>
       	<img id="main-loader" src="img/main-loader.gif" alt="" style="margin-top:6px;visibility:hidden;"/>
       </li>
