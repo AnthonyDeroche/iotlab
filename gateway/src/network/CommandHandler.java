@@ -13,7 +13,7 @@ public class CommandHandler {
 	}
 
 	public void handleIncomingCommand(JsonObject object) {
-		this.serialConnection.writeSerialData(object.get("command").toString());
+		this.serialConnection.writeSerialData(object.getString("command"));
 	}
 
 	public SerialConnection getSerialConnection() {
